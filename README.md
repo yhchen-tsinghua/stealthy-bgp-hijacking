@@ -39,9 +39,9 @@ Overall, the paper has three parts of experiments: an empricial study (§IV), an
 The high-level workflow is as follows:
 
 1. Prepare the runtime environment (see [Environment Preparation](#environment-preparation))
-2. Run `artefact/empirical-study/run.sh`
-3. Run `artefact/analytical-study/run.sh`
-4. Run `artefact/performance/run.sh`
+2. Run `artefact/empirical-study/run.sh` (see [Reproducing the Empirical Study](#1-reproducing-the-empirical-study))
+3. Run `artefact/analytical-study/run.sh` (see [Reproducing the Analytical Study](#2-reproducing-the-analytical-study))
+4. Run `artefact/performance/run.sh` (see [Reproducing the Performance Evaluation](#3-reproducing-the-performance-evaluation))
 
 The resource required during the runtime is estimated as follows:
 
@@ -53,7 +53,7 @@ The resource required during the runtime is estimated as follows:
 **Please kindly read this before you proceed:**
 
 -   We understand that the required resource is significant, so **we have prepared a cloud platform ready for your evaluation**. The access key is provided via HotCRP. As such, we highly recommend you to use our prepared platform to reduce the burden.
--   If you want to test the artefact on your own platform, **we highly recommend you to choose the docker approach** (detailed later) rather than build the environment from scatch, as there are many third-party tools (e.g., NodeJS, [BGPdump](https://github.com/RIPE-NCC/bgpdump), and [BGPsim](https://github.com/Fraunhofer-SIT/bgpsim/tree/main)) that we do not include in this repository and that you have to compile from source following their instructions, which are non-trivial.
+-   If you want to test the artefact on your own platform, **we highly recommend you to choose the docker approach** (detailed later) rather than build the environment from scratch, as there are many third-party tools (e.g., NodeJS, [BGPdump](https://github.com/RIPE-NCC/bgpdump), and [BGPsim](https://github.com/Fraunhofer-SIT/bgpsim/tree/main)) that we do not include in this repository and that you have to compile from source following their instructions, which are non-trivial.
 
 ## Environment Preparation
 
@@ -92,7 +92,8 @@ Please follow these steps to prepare the environment:
     : > "docker-image.tar.gz"
 
     for i in $(seq -w 1 "$NUM_PARTS"); do
-        PART_URL="${BASE_URL}${i}"
+        suffix=$(printf "%02d" "$i")
+        PART_URL="${BASE_URL}${suffix}"
         echo "Downloading $PART_URL..."
         curl -fSL "$PART_URL" >> "docker-image.tar.gz"
     done
@@ -180,7 +181,7 @@ Please follow these steps to prepare the environment:
 3.  Install all required tools.
 
     ```bash
-    # All tools for compilation
+    # All tools for compiling
     BUILD_DEPS="cmake build-essential swig autoconf zlib1g-dev libbz2-dev wget"
     # All tools for runtime
     RUNTIME_DEPS="whois ca-certificates time"
@@ -237,7 +238,7 @@ Please follow these steps to prepare the environment:
     cd ../../
     ```
 
-    Note that the compilation may encouter several errors. Following the suggestions by the compiler should fix them all.
+    Note that the compiling process may encouter several errors. Following the suggestions by the compiler should fix them all.
 
     See their [original repository](https://github.com/Fraunhofer-SIT/bgpsim/tree/main) for detailed instructions.
 
