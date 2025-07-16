@@ -1,0 +1,28 @@
+name: artefact
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.10
+  - numpy
+  - pandas
+  - click
+  - rapidfuzz
+  - requests
+  - nodejs
+  - lz4
+  - numba
+  - matplotlib
+  - seaborn
+  - scipy
+  - geopandas=0.14.2
+  - fiona=1.9.5
+  - datashader
+  - pillow
+  - pip
+  - pip:
+    - matplotlib_venn==0.11.10
+    - colorcet
+    - torch
+    - torchvision
+    - torchaudio

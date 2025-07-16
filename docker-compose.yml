@@ -1,0 +1,13 @@
+services:
+  ndss26ae20:
+    image: ndss26/ae20:latest
+    container_name: ndss26-ae20
+    stdin_open: true    # Allow interactive
+    tty: true           # Allocate a pseudo-TTY
+    volumes:
+      - ./shared:/shared  # mount shared directory
+      - /opt/matrices:/workspace/empirical-study/data/matrices
+    working_dir: /workspace
+    ports:
+      - "3000:3000"
+    entrypoint: ["bash"]

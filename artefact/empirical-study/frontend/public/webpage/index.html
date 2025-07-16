@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stealthy BGP Hijacking Incidents</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+    <link href='app.css' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id="app">
+      <div class="App">
+        <div class="Loader">loading...</div>
+        <article class="main">
+          <div class="Info">
+            <span>&#x1F4E3;&nbsp;&nbsp;2025/03/17: The feedback feature is online!</span>
+          </div>
+          <header class="Header">
+            <h1>Stealthy BGP Hijacking Incidents</h1>
+            <div class="HeaderLinks">
+              <span class="popup-trigger" popup-id="download">Download</span>
+              <span class="popup-trigger" popup-id="about">About</span>
+              <span class="popup-trigger" popup-id="feedback">Feedback</span>
+            </div>
+          </header>
+          <div class="SearchBox">
+            <div class="Search">
+              <input type="text" autoComplete="none" autoCorrect="none" autoCapitalize="none" spellCheck="false" placeholder="Your ASN/Prefix/Organization" />
+              <button class="reload">
+                &#10149;
+                <span class="description">Search</span>
+              </button>
+              <button class="clear">
+                &times;
+                <span class="description">Clear</span>
+              </button>
+            </div>
+
+            <ul class="SuggestionList">
+            </ul>
+
+            <div class="AdvancedOptionsContainer">
+              <details class="AdvancedOptions">
+                <summary>Advanced options</summary>
+                <form class="options">
+                  <div class="field-container">
+                    <b>Search in fields:</b>
+                    <div class="options-container">
+                      <label>
+                        <input type="checkbox" name="fields" value="prefixes" checked />
+                        Affected prefixes
+                      </label>
+                      <label>
+                        <input type="checkbox" name="fields" value="expected_origins" checked />
+                        Expected origins
+                      </label>
+                      <label>
+                        <input type="checkbox" name="fields" value="unexpected_origins" checked />
+                        Unexpected origins
+                      </label>
+                    </div>
+                  </div>
+                  <div class="field-container">
+                    <b>Search options:</b>
+                    <div class="options-container">
+                      <label><input type="checkbox" name="prefix" value="true" checked /> Prefix-matching</label>
+                      <label><input type="checkbox" name="fuzzy" value="true" checked /> Fuzzy-matching</label>
+                    </div>
+                  </div>
+                  <div class="field-container">
+                    <b>Search terms with:</b>
+                    <div class="options-container">
+                      <label><input type="radio" name="combineWith" value="OR" checked /> OR</label>
+                      <label><input type="radio" name="combineWith" value="AND" /> AND</label>
+                    </div>
+                  </div>
+                  <div class="field-container">
+                    <b>Date filter:</b>
+                    <div class="options-container">
+                      <label>
+                          from
+                          <input id="fromDate" type="date" name="fromDate" />
+                        </label>
+                        <label>
+                          to
+                          <input id="toDate" type="date" name="toDate" />
+                          </select>
+                        </label>
+                    </div>
+                  </div>
+                  <div class="field-container">
+                    <b>Category filter:</b>
+                    <div class="options-container">
+                      <label><input type="checkbox" name="category" value="Bad Operational Practice" checked /> Bad Operational Practice</label>
+                      <label><input type="checkbox" name="category" value="Potential Stealthy Hijacking" checked /> Potential Stealthy Hijacking</label>
+                    </div>
+                  </div>
+                  <div class="field-container">
+                    <b>Tag filter:</b>
+                    <div class="options-container">
+                      <label><input type="checkbox" name="tags" value="Origin AS-Set" checked /> Origin AS-Set</label>
+                      <label><input type="checkbox" name="tags" value="Origin Relay" checked /> Origin Relay</label>
+                      <label><input type="checkbox" name="tags" value="Private-Use ASN" checked /> Private-Use ASN</label>
+                      <label><input type="checkbox" name="tags" value="Similar Org Name" checked /> Similar Org Name</label>
+                      <label><input type="checkbox" name="tags" value="Different Countries" checked /> Different Countries</label>
+                      <label><input type="checkbox" name="tags" value="Direct VP View" checked /> Direct VP View</label>
+                      <label><input type="checkbox" name="tags" value="WHOIS Recorded" checked /> WHOIS Recorded</label>
+                      <label><input type="checkbox" name="tags" value="(no tag)" checked /> (None)</label>
+                    </div>
+                  </div>
+                </form>
+              </details>
+              <span class="ResultStats"></span>
+            </div>
+          </div>
+          <ul class="ResultList">
+          </ul>
+        </article>
+
+        <!-- Popup Template (Initially Hidden) -->
+        <div id="popup" class="popup">
+          <div class="popup-content">
+            <div class="popup-header">
+              <h2 id="popup-title"></h2>
+              <button id="popup-close-button" class="popup-close-button">&times;</button>
+            </div>
+            <div id="popup-body" class="popup-body"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
+    <script src="app.js" type="text/javascript"></script>
+  </body>
+</html>
