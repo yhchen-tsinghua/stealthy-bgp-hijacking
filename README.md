@@ -205,7 +205,7 @@ Please follow these steps to prepare the environment:
     # Create the environment
     $CONDA_DIR/bin/conda env create -f environment.yml && \
     $CONDA_DIR/bin/conda clean --all -y && \
-    $CONDA_DIR/bin/conda activate $CONDA_ENV_NAME"
+    $CONDA_DIR/bin/conda activate $CONDA_ENV_NAME
     echo "source activate $CONDA_ENV_NAME" >> ~/.bashrc
     ```
 
@@ -297,7 +297,7 @@ Run `./empirical-study/run.sh`, which will:
         - `incidents-breakdown.pdf` -> Figure 2
         - `overall_impact.json` -> Table II
         - `daily-incidents.pdf` -> Figure 3
-        - `vp-distribution` -> Figure 4
+        - `vp-distribution.pdf` -> Figure 4
 
 3. Set up the service frontend (`./empirical-study/frontend/`)
     - **What happens:** this step starts the frontend service through `npm start` to display the backend results (i.e., `20250101.1200.amsix_route-views2_wide.alarms.json` and `20250101.1200.amsix_route-views2_wide.incidents.json`) generated from the first step.
