@@ -26,7 +26,10 @@ def get_all_collectors(url_index="http://routeviews.org/"):
             while f"{collector_name}{idx}" in collectors2url:
                 idx += 1
             collector_name = f"{collector_name}{idx}"
-        collectors2url[collector_name] = urljoin(url_index, a) + "/"
+        if a[-7:] != "bgpdata":
+            collectors2url[collector_name] = urljoin(url_index, f"{a}/bgpdata") + "/"
+        else:
+            collectors2url[collector_name] = urljoin(url_index, a) + "/"
 
     return collectors2url
 
