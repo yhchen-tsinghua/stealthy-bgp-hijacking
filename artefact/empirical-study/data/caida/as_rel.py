@@ -23,7 +23,7 @@ def get(serial, time):
         out_txt = SERIAL_2_DIR / fname[:-4]
     else:
         raise RuntimeError("bad argument")
-    if out_txt.with_suffix("").exists():
+    if out_txt.exists():
         return out_txt
     response = requests.get(url)
     response.raise_for_status()
