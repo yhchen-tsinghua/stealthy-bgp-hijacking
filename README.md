@@ -1,6 +1,8 @@
-# NDSS26-Summer-AE\#20: Understanding the Stealthy BGP Hijacking Risk in the ROV Era
+# Artefact for NDSS26 Summer Paper: Understanding the Stealthy BGP Hijacking Risk in the ROV Era
 
-This is the reporsitory for Artefract Evaluation \#20 in the summer cycle of NDSS 2026. Please follow the steps below to reproduce all results in the paper _Understanding the Stealthy BGP Hijacking Risk in the ROV Era_.
+This is the artefact reporsitory for the [paper](https://dx.doi.org/10.14722/ndss.2026.230097) _Understanding the Stealthy BGP Hijacking Risk in the ROV Era_ in the summer cycle of NDSS 2026. Please follow the steps below to reproduce all results in the paper.
+
+**NOTE:** The matrix-based BGP simulator is maintained in a standalone [GitHub repository](https://github.com/yhchen-tsinghua/matrix-bgpsim) and has already been released on [PyPI](https://pypi.org/project/matrix-bgpsim/). Please check it out!
 
 ## Overview
 
@@ -79,50 +81,22 @@ Please follow these steps to prepare the environment:
 
 1. Download the repository.
     ```bash
-    git clone git@github.com:anonymized-for-review/stealthy-bgp-hijacking.git ndss26-ae20
+    git clone git@github.com:yhchen-tsinghua/stealthy-bgp-hijacking.git ndss26-ae20
     cd ndss26-ae20
     ```
-2. Download the pre-built docker image (\~7.3G).
+2. Download the pre-built docker image (\~7.8GB).
 
     ```bash
-    BASE_URL="https://github.com/anonymized-for-review/stealthy-bgp-hijacking/releases/download/v0.1.0-docker-image/docker-image.tar.gz.part"
-    NUM_PARTS="8"
-
-    # Truncate or create the output file
-    : > "docker-image.tar.gz"
-
-    for i in $(seq -w 1 "$NUM_PARTS"); do
-        suffix=$(printf "%02d" "$i")
-        PART_URL="${BASE_URL}${suffix}"
-        echo "Downloading $PART_URL..."
-        curl -fSL "$PART_URL" >> "docker-image.tar.gz"
-    done
+    URL="https://zenodo.org/records/16732324/files/docker-image.tar.gz?download=1"
+    curl -L $URL -o docker-image.tar.gz
     ```
 
-3. Download the pre-computed matrices archive (\~30G), extract it, and configure its location within `docker-compose.yml` and `docker-compose-gpu.yml` so that it can be properly mounted into the docker container. See [Detailed Steps](#detailed-steps) for why these matrices are needed.
+3. Download the pre-computed matrices archive (\~31.2GB), extract it, and configure its location within `docker-compose.yml` and `docker-compose-gpu.yml` so that it can be properly mounted into the docker container. See [Detailed Steps](#detailed-steps) for why these matrices are needed.
 
     ```bash
-    BASE_URL="https://github.com/anonymized-for-review/stealthy-bgp-hijacking/releases/download/v0.1.0-matrices/matrices.tar.gz.part"
-    NUM_PARTS="30"
-
-    # Create a temporary named pipe
-    PIPE=$(mktemp -u)
-    mkfifo "$PIPE"
-
-    # Stream parts into the pipe
-    {
-        for i in $(seq -w 1 "$NUM_PARTS"); do
-            PART_URL="${BASE_URL}${i}"
-            echo "Downloading $PART_URL..." >&2
-            curl -sSL "$PART_URL"
-        done
-    } > "$PIPE" &
-
-    # Extract from the streamed pipe
-    tar -xzvf "$PIPE"
-
-    # Clean up the named pipe
-    rm "$PIPE"
+    URL="https://zenodo.org/records/16732324/files/matrices.tar.gz?download=1"
+    curl -L $URL -o matrices.tar.gz
+    tar -xzvf matrices.tar.gz
 
     # Move the matrices directory to the mounted location. You may
     # also modify docker-compose.yml and docker-compose-gpu.yml to
@@ -145,34 +119,16 @@ Please follow these steps to prepare the environment:
 1.  Download the repository.
 
     ```bash
-    git clone git@github.com:anonymized-for-review/stealthy-bgp-hijacking.git ndss26-ae20
+    git clone git@github.com:yhchen-tsinghua/stealthy-bgp-hijacking.git ndss26-ae20
     cd ndss26-ae20/artefact
     ```
 
-2.  Download the pre-computed matrices archive (\~30G), extract it, and move it to the data directory that can be found by all scripts.
+2.  Download the pre-computed matrices archive (\~31.2GB), extract it, and move it to the data directory that can be found by all scripts.
 
     ```bash
-    BASE_URL="https://github.com/anonymized-for-review/stealthy-bgp-hijacking/releases/download/v0.1.0-matrices/matrices.tar.gz.part"
-    NUM_PARTS="30"
-
-    # Create a temporary named pipe
-    PIPE=$(mktemp -u)
-    mkfifo "$PIPE"
-
-    # Stream parts into the pipe
-    {
-        for i in $(seq -w 1 "$NUM_PARTS"); do
-            PART_URL="${BASE_URL}${i}"
-            echo "Downloading $PART_URL..." >&2
-            curl -sSL "$PART_URL"
-        done
-    } > "$PIPE" &
-
-    # Extract from the streamed pipe
-    tar -xzvf "$PIPE"
-
-    # Clean up the named pipe
-    rm "$PIPE"
+    URL="https://zenodo.org/records/16732324/files/matrices.tar.gz?download=1"
+    curl -L $URL -o matrices.tar.gz
+    tar -xzvf matrices.tar.gz
 
     # Move matrices to the data directory
     mv matrices ./empirical-study/data
@@ -292,7 +248,7 @@ Run `./empirical-study/run.sh`, which will:
 
 2. Run `./empirical-study/reproduce.py` to reproduce all figures and tables in §IV, except for Figure 5, which is manually created using MS PPT.
 
-    - **What happens:** This script does not use results of the previous step, which are only one-day's results. To reproduce, it uses all incidents and alarms captured in the first two months of year 2025, which are preserved in `./empirical-study/data/service` beforehand and are exactly a snapshot of the results by 2025/07/11 from [our service in production](https://anonymized4review.online/).
+    - **What happens:** This script does not use results of the previous step, which are only one-day's results. To reproduce, it uses all incidents and alarms captured in the first two months of year 2025, which are preserved in `./empirical-study/data/service` beforehand and are exactly a snapshot of the results by 2025/07/11 from [our service in production](https://yhchen.cn/stealthy-bgp-hijacking).
     - **What to expect:** The figures listed below are created under `./empirical-study/results`, and are also copied to `/shared` so you can access them from outside the docker container at `./shared` on the host.
         - `incidents-breakdown.pdf` -> Figure 2
         - `overall_impact.json` -> Table II
@@ -301,7 +257,7 @@ Run `./empirical-study/run.sh`, which will:
 
 3. Set up the service frontend (`./empirical-study/frontend/`)
     - **What happens:** this step starts the frontend service through `npm start` to display the backend results (i.e., `20250101.1200.amsix_route-views2_wide.alarms.json` and `20250101.1200.amsix_route-views2_wide.incidents.json`) generated from the first step.
-    - **What to expect:** Once the service is up, it can be accessed at http://localhost:3000/ using a browser. If you are using a docker container, the port is also mapped to 3000 on the host, so you can also access the service through http://localhost:3000/ on the host using a browser. If a browser is not available, try use `wget` or `curl`, which, however, would only get the static html page and would not render the JS script. Reviewers are also encouraged to view our production version of this service at https://anonymized4review.online/.
+    - **What to expect:** Once the service is up, it can be accessed at http://localhost:3000/ using a browser. If you are using a docker container, the port is also mapped to 3000 on the host, so you can also access the service through http://localhost:3000/ on the host using a browser. If a browser is not available, try use `wget` or `curl`, which, however, would only get the static html page and would not render the JS script. Reviewers are also encouraged to view our production version of this service at https://yhchen.cn/stealthy-bgp-hijacking.
 
 ### 2. Reproducing the Analytical Study
 
@@ -375,10 +331,10 @@ Run `./performance-evaluation/run.sh`, which will:
 2. Run `./performance-evaluation/reproduce.py` to reproduce all figures and tables in §VII.
 
     - **What happens:** This script uses the results of the previous step and also those preserved in `./empirical-study/data/service` ([previously](#1-reproducing-the-empirical-study) described) to evaluate the performance of our framework, and generates all kinds of figures and tables in §VII.
-    - **What to expect:** The figures listed below are created under `./performance-evaluate/results`, and are also copied to `/shared` so you can access them from outside the docker container at `./shared` on the host.
-        - `acc.pdf` -> Figure 14
-        - `resistance.pdf` -> Figure 15
+    - **What to expect:** The figures listed below are created under `./performance-evaluation/results`, and are also copied to `/shared` so you can access them from outside the docker container at `./shared` on the host.
+        - `acc.pdf` -> Figure 15
+        - `resistance.pdf` -> Figure 16
         - `ablation-table.tex` -> Table V
-        - `runtime_performance.pdf` -> Figure 16
+        - `runtime_performance.pdf` -> Figure 17
 
 ---
